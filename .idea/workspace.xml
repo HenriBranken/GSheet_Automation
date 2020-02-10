@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e04aa553-fc42-444b-8d1d-dd74ad0acac8" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="1U9jQYhuXRwDPEixvcS22nQz4Wj" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunManager" selected="Python.demo_sheet_fancy">
+    <configuration name="bitmex_improved" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="new" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bitmex_improved.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="crypto_automation_01" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="new" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/crypto_automation_01.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="crypto_automation_02" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="new" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/crypto_automation_02.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="demo_sheet_fancy" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="new" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Stiaan_Gerber" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Stiaan_Gerber/demo_sheet_fancy.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.demo_sheet_fancy" />
+        <item itemvalue="Python.bitmex_improved" />
+        <item itemvalue="Python.crypto_automation_01" />
+        <item itemvalue="Python.crypto_automation_02" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e04aa553-fc42-444b-8d1d-dd74ad0acac8" name="Default Changelist" comment="" />
+      <created>1574775690237</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1574775690237</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="4483" y="257" width="624" height="551" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1581083299920">
+      <screen x="3840" y="0" width="1920" height="1080" />
+    </state>
+    <state x="4483" y="257" width="624" height="551" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@3840.0.1920.1080" timestamp="1581083299920" />
+    <state x="4578" y="293" width="424" height="491" key="FileChooserDialogImpl" timestamp="1580289333194">
+      <screen x="3840" y="0" width="1920" height="1080" />
+    </state>
+    <state x="4578" y="293" width="424" height="491" key="FileChooserDialogImpl/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@3840.0.1920.1080" timestamp="1580289333194" />
+    <state width="1897" height="224" key="GridCell.Tab.0.bottom" timestamp="1581089632315">
+      <screen x="3840" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1897" height="224" key="GridCell.Tab.0.bottom/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@3840.0.1920.1080" timestamp="1581089632315" />
+    <state width="1897" height="268" key="GridCell.Tab.0.bottom/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@5760.0.1920.1080" timestamp="1580297293354" />
+    <state width="1897" height="224" key="GridCell.Tab.0.center" timestamp="1581089632315">
+      <screen x="3840" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1897" height="224" key="GridCell.Tab.0.center/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@3840.0.1920.1080" timestamp="1581089632315" />
+    <state width="1897" height="268" key="GridCell.Tab.0.center/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@5760.0.1920.1080" timestamp="1580297293354" />
+    <state width="1897" height="224" key="GridCell.Tab.0.left" timestamp="1581089632315">
+      <screen x="3840" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1897" height="224" key="GridCell.Tab.0.left/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@3840.0.1920.1080" timestamp="1581089632315" />
+    <state width="1897" height="268" key="GridCell.Tab.0.left/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@5760.0.1920.1080" timestamp="1580297293354" />
+    <state width="1897" height="224" key="GridCell.Tab.0.right" timestamp="1581089632315">
+      <screen x="3840" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1897" height="224" key="GridCell.Tab.0.right/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@3840.0.1920.1080" timestamp="1581089632315" />
+    <state width="1897" height="268" key="GridCell.Tab.0.right/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@5760.0.1920.1080" timestamp="1580297293354" />
+    <state x="4550" y="144" width="1022" height="737" key="SettingsEditor" timestamp="1581089999315">
+      <screen x="3840" y="0" width="1920" height="1080" />
+    </state>
+    <state x="4550" y="144" width="1022" height="737" key="SettingsEditor/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@3840.0.1920.1080" timestamp="1581089999315" />
+    <state x="4456" y="359" key="com.intellij.ide.util.TipDialog" timestamp="1581157056467">
+      <screen x="3840" y="0" width="1920" height="1080" />
+    </state>
+    <state x="4456" y="359" key="com.intellij.ide.util.TipDialog/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@3840.0.1920.1080" timestamp="1581157056467" />
+  </component>
+</project>
