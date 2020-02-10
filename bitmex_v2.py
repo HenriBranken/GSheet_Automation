@@ -6,7 +6,7 @@ import time
 import logging
 import datetime
 import dateutil.parser
-import os
+import platform
 import requests
 import json
 
@@ -40,22 +40,28 @@ def infer_datetime(symbol_string):
 
 
 class GsheetUpdater:
-    def __init__(self, price_definition, sleep_interval, logfile_name):
+    def __init__(self, price_definition, sleep_interval, logfile_name, api_url, ticker_roots, perpetual_name,
+                 workbook_name, wks_num):
         self.logfile = open(logfile_name, 'w')
         self.logger = logging.getLogger(__name__)
         self.logger.info("Initializing GSheet_updater...")
         self.scope = ['https://www.googleapis.com/auth/drive']
-        if os.name == "nt":
+        if platform.system() == "Windows":
             self.f_cred = "C:\\Users\\Administrator\\Documents\\Henri\\Nick_Levenstein\\CREDENTIALS.json"
-        else:
+        elif platform.system() == "Linux":
             self.f_cred = "/home/henri/stuff/matogen/Nicholas_Levenstein/GSheet_Automation/CREDENTIALS.json"
+        else:
+            raise OSError
         self.credentials = ServiceAccountCredentials.from_json_keyfile_name(self.f_cred, self.scope)
         self.gc = gspread.authorize(self.credentials)
-        self.sh = self.gc.open("bitcoin_extractions")
-        self.wks1 = self.sh.get_worksheet(0)
+        self.sh = self.gc.open(workbook_name)
+        self.wks1 = self.sh.get_worksheet(wks_num)
         self.price_definition = price_definition
         self.sleep_interval = sleep_interval
+        self.api_url = api_url
+        self.ticker_roots = ticker_roots
         self.data_dict = dict()
+        self.perp = perpetual_name
 
     @staticmethod
     def produce_yy_strings():
@@ -65,22 +71,18 @@ class GsheetUpdater:
         yy_next_str = str(yy_next_int)[-2:]
         return yy_string, yy_next_str
 
-    @staticmethod
-    def parse_data():
-        api_endpoint = "https://www.bitmex.com/api/v1/instrument/active"
+    def parse_data(self):
         headers = {
             "Accept": "application/json"
         }
-        response = requests.get(url=api_endpoint, headers=headers)
+        response = requests.get(url=self.api_url, headers=headers)
         data = response.text
         return json.loads(data)
 
     def produce_data_dict(self, master_data):
-        ticker_roots = ["XBTH", "XBTM", "XBTU", "XBTZ"]
-        # H = March.  M = June.  U = September.  Z = December.
         y1, y2 = self.produce_yy_strings()
-        ticker_symbols = [elem + y1 for elem in ticker_roots]
-        ticker_prospectives = [elem + y2 for elem in ticker_roots]
+        ticker_symbols = [elem + y1 for elem in self.ticker_roots]
+        ticker_prospectives = [elem + y2 for elem in self.ticker_roots]
         ticker_symbols.extend(ticker_prospectives)
         futures_of_interest, symbols_of_interest = extract_dictionaries(tickers=ticker_symbols, master_data=master_data)
         symbols_of_interest.sort()
@@ -90,30 +92,30 @@ class GsheetUpdater:
                     self.data_dict[elem + "_dict"] = d
                     futures_of_interest.remove(d)
 
-    def update(self, i):
-        # self.logger.info("Iteration {:.0f}".format(i))
+    def update(self):
+        # self.logger.info("Iteration {:.0f}".format(i))  # This makes the file extremely big; hence commented.
         parsed = self.parse_data()
         self.produce_data_dict(master_data=parsed)
         self.wks1.update_acell("B2", str(datetime.datetime.utcnow()))
         self.wks1.update_acell("B4", '"{:s}"'.format(self.price_definition))
         present_date = datetime.datetime.now().date()
-        xbtusd_dict, _ = extract_dictionaries(tickers=["XBTUSD"], master_data=parsed)
-        xbtusd_dict = xbtusd_dict[0]
-        xbtusd_price = xbtusd_dict[self.price_definition]
+        perp_dict, _ = extract_dictionaries(tickers=[self.perp], master_data=parsed)
+        perp_dict = perp_dict[0]
+        perp_price = perp_dict[self.price_definition]
         k = 1
         for _, d in self.data_dict.items():
             ticker_symbol = d["symbol"]
             expiry_date = dateutil.parser.parse(d["expiry"]).date()
             delta_lapse = (expiry_date - present_date).days
             future_price = d[self.price_definition]
-            perc_diff = (future_price - xbtusd_price) / xbtusd_price
+            perc_diff = (future_price - perp_price) / perp_price
             annual_perc = (1 + perc_diff) ** (365.0 / delta_lapse) - 1
-            price_delta = future_price - xbtusd_price
+            price_delta = future_price - perp_price
 
             letter = num_alph_mapper[k]
             cell_list = self.wks1.range(letter + "5:" + letter + "13")
             str_01, str_02, str_03, str_04 = str(ticker_symbol), str(expiry_date), str(present_date), str(delta_lapse)
-            str_05, str_06 = "${:,.2f}".format(xbtusd_price), "${:,.2f}".format(future_price)
+            str_05, str_06 = "${:,.2f}".format(perp_price), "${:,.2f}".format(future_price)
             str_07, str_08 = "{:.2f}%".format(perc_diff * 100), "{:.2f}%".format(annual_perc * 100)
             str_09 = "${:,.2f}".format(price_delta)
             str_vals = [str_01, str_02, str_03, str_04, str_05, str_06, str_07, str_08, str_09]
@@ -127,7 +129,7 @@ class GsheetUpdater:
         i = 0
         while True:
             try:
-                self.update(i)
+                self.update()
             except gspread.exceptions.APIError as e:
                 self.logger.exception(e)
                 self.gc.login()
@@ -148,5 +150,12 @@ if __name__ == '__main__':
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                         level=logging.INFO)
 
-    updater = GsheetUpdater(price_definition="markPrice", sleep_interval=1, logfile_name=f_name)
+    updater = GsheetUpdater(price_definition="markPrice", sleep_interval=0.1, logfile_name=f_name,
+                            api_url="https://www.bitmex.com/api/v1/instrument/active",
+                            ticker_roots=["XBTH", "XBTM", "XBTU", "XBTZ"], perpetual_name="XBTUSD",
+                            workbook_name="bitcoin_extractions", wks_num=0)
     updater.run()
+# In the terminal:
+#   cd to the directory of this script.
+#   Execute the following:
+#       nohup ./bitmex_v2.py &
