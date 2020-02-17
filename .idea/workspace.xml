@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e04aa553-fc42-444b-8d1d-dd74ad0acac8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bitmex_v2.py" beforeDir="false" afterPath="$PROJECT_DIR$/bitmex_v2.py" afterDir="false" />
     </list>
@@ -167,9 +166,10 @@
       <screen x="3840" y="0" width="1920" height="1080" />
     </state>
     <state x="4550" y="144" width="1022" height="737" key="SettingsEditor/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@3840.0.1920.1080" timestamp="1581089999315" />
-    <state x="4456" y="359" key="com.intellij.ide.util.TipDialog" timestamp="1581325161683">
-      <screen x="3840" y="0" width="1920" height="1080" />
+    <state x="6376" y="359" key="com.intellij.ide.util.TipDialog" timestamp="1581951336433">
+      <screen x="5760" y="0" width="1920" height="1080" />
     </state>
-    <state x="4456" y="359" key="com.intellij.ide.util.TipDialog/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@3840.0.1920.1080" timestamp="1581325161683" />
+    <state x="4456" y="359" key="com.intellij.ide.util.TipDialog/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@3840.0.1920.1080" timestamp="1581768619749" />
+    <state x="6376" y="359" key="com.intellij.ide.util.TipDialog/3840.0.1920.1080/5760.0.1920.1080/1920.0.1920.1080/0.27.1920.1005@5760.0.1920.1080" timestamp="1581951336433" />
   </component>
 </project>
