@@ -46,15 +46,20 @@ class GsheetUpdater:
         log.info("Initializing GSheet_updater...")
         self.scope = ['https://www.googleapis.com/auth/drive']
         self.credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials, self.scope)
-        self.gc = gspread.authorize(self.credentials)
-        self.sh = self.gc.open(workbook_name)
-        self.wks1 = self.sh.get_worksheet(wks_num)
         self.price_definition = price_definition
         self.sleep_interval = sleep_interval
         self.api_url = api_url
         self.ticker_roots = ticker_roots
         self.data_dict = dict()
         self.perp = perpetual_name
+        self.workbook_name = workbook_name
+        self.wks_num = wks_num
+        self.authenticate()
+
+    def authenticate(self):
+        self.gc = gspread.authorize(self.credentials)
+        self.sh = self.gc.open(self.workbook_name)
+        self.wks1 = self.sh.get_worksheet(self.wks_num)
 
     @staticmethod
     def produce_yy_strings():
@@ -125,14 +130,21 @@ class GsheetUpdater:
                 self.update()
             except gspread.exceptions.APIError as e:
                 log.exception(e)
-                self.gc.login()
                 time.sleep(10)
+                try:
+                    self.gc.login()
+                except Exception as ee:
+                    log.exception(ee)
             except json.decoder.JSONDecodeError as e:
                 log.exception(e)
                 time.sleep(10)
             except Exception as e:
                 log.exception(e)
-                raise e
+                time.sleep(10)
+                try:
+                    self.authenticate()
+                except Exception as ee:
+                    log.exception(ee)
             i += 1
             time.sleep(self.sleep_interval)
 
