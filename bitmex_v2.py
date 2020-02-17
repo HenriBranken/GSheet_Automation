@@ -1,4 +1,4 @@
-#!/home/henri/anaconda3/bin/python3.7
+#!/usr/bin/env python3
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -6,7 +6,7 @@ import time
 import logging
 import datetime
 import dateutil.parser
-import platform
+import argparse
 import requests
 import json
 
@@ -41,17 +41,11 @@ def infer_datetime(symbol_string):
 
 
 class GsheetUpdater:
-    def __init__(self, price_definition, sleep_interval, api_url, ticker_roots, perpetual_name,
-                 workbook_name, wks_num):
+    def __init__(self, credentials, price_definition, sleep_interval, api_url, ticker_roots,
+                 perpetual_name, workbook_name, wks_num):
         log.info("Initializing GSheet_updater...")
         self.scope = ['https://www.googleapis.com/auth/drive']
-        if platform.system() == "Windows":
-            self.f_cred = "C:\\Users\\Administrator\\Documents\\Henri\\Nick_Levenstein\\CREDENTIALS.json"
-        elif platform.system() == "Linux":
-            self.f_cred = "/home/henri/stuff/matogen/Nicholas_Levenstein/GSheet_Automation/CREDENTIALS.json"
-        else:
-            raise OSError
-        self.credentials = ServiceAccountCredentials.from_json_keyfile_name(self.f_cred, self.scope)
+        self.credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials, self.scope)
         self.gc = gspread.authorize(self.credentials)
         self.sh = self.gc.open(workbook_name)
         self.wks1 = self.sh.get_worksheet(wks_num)
@@ -144,15 +138,28 @@ class GsheetUpdater:
 
 
 if __name__ == '__main__':
-    f_name = "updater.log"
-    logging.basicConfig(filename=f_name, filemode='w',
-                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                        level=logging.DEBUG)
+    parser = argparse.ArgumentParser(description="Google Sheet Updater Utility.")
+    parser.add_argument('credentials', help="Google service account credentials file in .json format.")
+    parser.add_argument('-w', '--workbook', help="Google Sheets workbook to update.",
+                        default='bitcoin_extractions')
+    parser.add_argument('-l', '--logfile', help="Program logile.", default='updater.log')
+    parser.add_argument('-v', '--verbose', help="Generate detailed log. (Loglevel set to DEBUG.)",
+                        action='store_true')
+    args = parser.parse_args()
 
-    updater = GsheetUpdater(price_definition="markPrice", sleep_interval=0.1,
+    if args.verbose:
+        loglevel = logging.DEBUG
+    else:
+        loglevel = logging.INFO
+
+    logging.basicConfig(filename=args.logfile, filemode='w',
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                        level=loglevel)
+
+    updater = GsheetUpdater(args.credentials, price_definition="markPrice", sleep_interval=0.1,
                             api_url="https://www.bitmex.com/api/v1/instrument/active",
                             ticker_roots=["XBTH", "XBTM", "XBTU", "XBTZ"], perpetual_name="XBTUSD",
-                            workbook_name="bitcoin_extractions", wks_num=0)
+                            workbook_name=args.workbook, wks_num=0)
     updater.run()
 # In the terminal:
 #   cd to the directory of this script.
