@@ -142,6 +142,8 @@ if __name__ == '__main__':
     parser.add_argument('credentials', help="Google service account credentials file in .json format.")
     parser.add_argument('-w', '--workbook', help="Google Sheets workbook to update.",
                         default='bitcoin_extractions')
+    parser.add_argument('-s', '--sleep', help="Sleep interval between updates.", type=float,
+                        default=5)
     parser.add_argument('-l', '--logfile', help="Program logile.", default='updater.log')
     parser.add_argument('-v', '--verbose', help="Generate detailed log. (Loglevel set to DEBUG.)",
                         action='store_true')
@@ -156,10 +158,14 @@ if __name__ == '__main__':
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                         level=loglevel)
 
-    updater = GsheetUpdater(args.credentials, price_definition="markPrice", sleep_interval=0.1,
+    updater = GsheetUpdater(args.credentials,
+                            price_definition="markPrice",
+                            sleep_interval=args.sleep,
                             api_url="https://www.bitmex.com/api/v1/instrument/active",
-                            ticker_roots=["XBTH", "XBTM", "XBTU", "XBTZ"], perpetual_name="XBTUSD",
-                            workbook_name=args.workbook, wks_num=0)
+                            ticker_roots=["XBTH", "XBTM", "XBTU", "XBTZ"],
+                            perpetual_name="XBTUSD",
+                            workbook_name=args.workbook,
+                            wks_num=0)
     updater.run()
 # In the terminal:
 #   cd to the directory of this script.
