@@ -10,6 +10,7 @@ import platform
 import requests
 import json
 
+log = logging.getLogger(__name__)
 
 num_alph_mapper = {
     1: "B",
@@ -40,11 +41,9 @@ def infer_datetime(symbol_string):
 
 
 class GsheetUpdater:
-    def __init__(self, price_definition, sleep_interval, logfile_name, api_url, ticker_roots, perpetual_name,
+    def __init__(self, price_definition, sleep_interval, api_url, ticker_roots, perpetual_name,
                  workbook_name, wks_num):
-        self.logfile = open(logfile_name, 'w')
-        self.logger = logging.getLogger(__name__)
-        self.logger.info("Initializing GSheet_updater...")
+        log.info("Initializing GSheet_updater...")
         self.scope = ['https://www.googleapis.com/auth/drive']
         if platform.system() == "Windows":
             self.f_cred = "C:\\Users\\Administrator\\Documents\\Henri\\Nick_Levenstein\\CREDENTIALS.json"
@@ -93,7 +92,7 @@ class GsheetUpdater:
                     futures_of_interest.remove(d)
 
     def update(self):
-        # self.logger.info("Iteration {:.0f}".format(i))  # This makes the file extremely big; hence commented.
+        log.debug("Updating...")
         parsed = self.parse_data()
         self.produce_data_dict(master_data=parsed)
         self.wks1.update_acell("B2", str(datetime.datetime.utcnow()))
@@ -131,14 +130,14 @@ class GsheetUpdater:
             try:
                 self.update()
             except gspread.exceptions.APIError as e:
-                self.logger.exception(e)
+                log.exception(e)
                 self.gc.login()
                 time.sleep(10)
             except json.decoder.JSONDecodeError as e:
-                self.logger.exception(e)
+                log.exception(e)
                 time.sleep(10)
             except Exception as e:
-                self.logger.exception(e)
+                log.exception(e)
                 raise e
             i += 1
             time.sleep(self.sleep_interval)
@@ -148,9 +147,9 @@ if __name__ == '__main__':
     f_name = "updater.log"
     logging.basicConfig(filename=f_name, filemode='w',
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                        level=logging.INFO)
+                        level=logging.DEBUG)
 
-    updater = GsheetUpdater(price_definition="markPrice", sleep_interval=0.1, logfile_name=f_name,
+    updater = GsheetUpdater(price_definition="markPrice", sleep_interval=0.1,
                             api_url="https://www.bitmex.com/api/v1/instrument/active",
                             ticker_roots=["XBTH", "XBTM", "XBTU", "XBTZ"], perpetual_name="XBTUSD",
                             workbook_name="bitcoin_extractions", wks_num=0)
