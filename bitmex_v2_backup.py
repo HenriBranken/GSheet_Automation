@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/henri/anaconda3/bin/python3.7
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -6,11 +6,10 @@ import time
 import logging
 import datetime
 import dateutil.parser
-import argparse
+import platform
 import requests
 import json
 
-log = logging.getLogger(__name__)
 
 num_alph_mapper = {
     1: "B",
@@ -41,28 +40,28 @@ def infer_datetime(symbol_string):
 
 
 class GsheetUpdater:
-    def __init__(self, credentials, price_definition, sleep_interval, api_url, ticker_roots,
-                 perpetual_name, workbook_name, wks_num):
-        log.info("Initializing GSheet_updater...")
+    def __init__(self, price_definition, sleep_interval, logfile_name, api_url, ticker_roots, perpetual_name,
+                 workbook_name, wks_num):
+        self.logfile = open(logfile_name, 'w')
+        self.logger = logging.getLogger(__name__)
+        self.logger.info("Initializing GSheet_updater...")
         self.scope = ['https://www.googleapis.com/auth/drive']
-        self.credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials, self.scope)
+        if platform.system() == "Windows":
+            self.f_cred = "C:\\Users\\Administrator\\Documents\\Henri\\Nick_Levenstein\\CREDENTIALS.json"
+        elif platform.system() == "Linux":
+            self.f_cred = "/home/henri/stuff/matogen/Nicholas_Levenstein/GSheet_Automation/CREDENTIALS.json"
+        else:
+            raise OSError
+        self.credentials = ServiceAccountCredentials.from_json_keyfile_name(self.f_cred, self.scope)
+        self.gc = gspread.authorize(self.credentials)
+        self.sh = self.gc.open(workbook_name)
+        self.wks1 = self.sh.get_worksheet(wks_num)
         self.price_definition = price_definition
         self.sleep_interval = sleep_interval
         self.api_url = api_url
         self.ticker_roots = ticker_roots
         self.data_dict = dict()
         self.perp = perpetual_name
-        self.workbook_name = workbook_name
-        self.wks_num = wks_num
-        self.authenticate()
-        self.gc = None
-        self.sh = None
-        self.wks1 = None
-
-    def authenticate(self):
-        self.gc = gspread.authorize(self.credentials)
-        self.sh = self.gc.open(self.workbook_name)
-        self.wks1 = self.sh.get_worksheet(self.wks_num)
 
     @staticmethod
     def produce_yy_strings():
@@ -94,7 +93,7 @@ class GsheetUpdater:
                     futures_of_interest.remove(d)
 
     def update(self):
-        log.debug("Updating...")
+        # self.logger.info("Iteration {:.0f}".format(i))  # This makes the file extremely big; hence commented.
         parsed = self.parse_data()
         self.produce_data_dict(master_data=parsed)
         self.wks1.update_acell("B2", str(datetime.datetime.utcnow()))
@@ -132,55 +131,29 @@ class GsheetUpdater:
             try:
                 self.update()
             except gspread.exceptions.APIError as e:
-                log.exception(e)
+                self.logger.exception(e)
+                self.gc.login()
                 time.sleep(10)
-                try:
-                    self.gc.login()
-                except Exception as ee:
-                    log.exception(ee)
             except json.decoder.JSONDecodeError as e:
-                log.exception(e)
+                self.logger.exception(e)
                 time.sleep(10)
             except Exception as e:
-                log.exception(e)
-                time.sleep(10)
-                try:
-                    self.authenticate()
-                except Exception as ee:
-                    log.exception(ee)
+                self.logger.exception(e)
+                raise e
             i += 1
             time.sleep(self.sleep_interval)
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Google Sheet Updater Utility.")
-    parser.add_argument('credentials', help="Google service account credentials file in .json format.")
-    parser.add_argument('-w', '--workbook', help="Google Sheets workbook to update.",
-                        default='bitcoin_extractions')
-    parser.add_argument('-s', '--sleep', help="Sleep interval between updates.", type=float,
-                        default=0.1)
-    parser.add_argument('-l', '--logfile', help="Program logile.", default='updater.log')
-    parser.add_argument('-v', '--verbose', help="Generate detailed log. (Loglevel set to DEBUG.)",
-                        action='store_true')
-    args = parser.parse_args()
-
-    if args.verbose:
-        loglevel = logging.DEBUG
-    else:
-        loglevel = logging.INFO
-
-    logging.basicConfig(filename=args.logfile, filemode='w',
+    f_name = "updater.log"
+    logging.basicConfig(filename=f_name, filemode='w',
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                        level=loglevel)
+                        level=logging.INFO)
 
-    updater = GsheetUpdater(credentials=args.credentials,
-                            price_definition="markPrice",
-                            sleep_interval=args.sleep,
+    updater = GsheetUpdater(price_definition="markPrice", sleep_interval=0.1, logfile_name=f_name,
                             api_url="https://www.bitmex.com/api/v1/instrument/active",
-                            ticker_roots=["XBTH", "XBTM", "XBTU", "XBTZ"],
-                            perpetual_name="XBTUSD",
-                            workbook_name=args.workbook,
-                            wks_num=0)
+                            ticker_roots=["XBTH", "XBTM", "XBTU", "XBTZ"], perpetual_name="XBTUSD",
+                            workbook_name="bitcoin_extractions", wks_num=0)
     updater.run()
 # In the terminal:
 #   cd to the directory of this script.
